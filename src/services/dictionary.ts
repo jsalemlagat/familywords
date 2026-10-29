@@ -31,7 +31,18 @@ export class WordDictionary {
   private init() {
     if (this.initialized) return;
     for (const w of RAW_DICTIONARY_WORDS) {
-      this.insert(w.toUpperCase());
+      const upper = w.toUpperCase();
+      this.insert(upper);
+      // Automatically register plural forms (e.g. street -> streets, peer -> peers, box -> boxes)
+      if (upper.length >= 3) {
+        if (upper.endsWith('S') || upper.endsWith('X') || upper.endsWith('Z') || upper.endsWith('H')) {
+          this.insert(upper + 'ES');
+        } else if (upper.endsWith('Y') && !['A', 'E', 'I', 'O', 'U'].includes(upper.charAt(upper.length - 2))) {
+          this.insert(upper.slice(0, -1) + 'IES');
+        } else {
+          this.insert(upper + 'S');
+        }
+      }
     }
     this.initialized = true;
   }
