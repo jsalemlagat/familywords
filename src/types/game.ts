@@ -191,9 +191,22 @@ export interface GameRoom {
  * 3-letter word = 1 point
  * 4-letter word = 2 points
  * 5-letter word = 3 points
- * and so on: points = length - 2 (minimum length = 3)
+ * and so on: points = effectiveLength - 2 (minimum length = 3)
+ * Special rule: "QU" counts as 2 letters for scoring purposes.
  */
 export function calculateWordPoints(word: string): number {
-  if (word.length < 3) return 0;
-  return word.length - 2;
+  const upper = word.toUpperCase();
+  // Count effective letter length where 'QU' counts as 2
+  let effectiveLength = 0;
+  for (let i = 0; i < upper.length; i++) {
+    if (upper[i] === 'Q' && upper[i + 1] === 'U') {
+      effectiveLength += 2;
+      i++; // skip 'U'
+    } else {
+      effectiveLength += 1;
+    }
+  }
+
+  if (effectiveLength < 3) return 0;
+  return effectiveLength - 2;
 }

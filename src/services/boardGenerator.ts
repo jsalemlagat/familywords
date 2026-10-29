@@ -6,10 +6,10 @@
 import { DifficultyLevel, DIFFICULTY_CONFIGS } from '../types/game';
 import { globalDictionary } from './dictionary';
 
-// 25 Boggle Deluxe / Big Boggle standard dice faces (each die has 6 letters)
+// 25 Boggle Deluxe / Big Boggle standard dice faces with Qu included
 const STANDARD_25_DICE = [
   "AAAFRS", "AAEEEE", "AAFIRS", "ADENNN", "AEEEEM",
-  "AEEGMU", "AEGMNN", "AFIRSY", "BJKQXZ", "CCNSTW",
+  "AEEGMU", "AEGMNN", "AFIRSY", "BJQUXZ", "CCNSTW",
   "CEIILT", "CEILPT", "CEIPST", "DHHNOT", "DHHLOR",
   "DHLNOR", "DDLNOR", "EIIITT", "EMOTTT", "ENSSSU",
   "FIPRSY", "GORRVW", "HIPRRY", "NOOTUW", "OOOTTU",

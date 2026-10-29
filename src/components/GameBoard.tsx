@@ -367,7 +367,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 >
                   {/* Embossed Letter */}
                   <span className="leading-none drop-shadow-sm pointer-events-none">
-                    {letter}
+                    {letter === 'QU' ? 'Qu' : letter}
                   </span>
 
                   {/* Scrabble point subscript */}

@@ -98,11 +98,26 @@ export class WordDictionary {
     ];
 
     const dfs = (r: number, c: number, node: TrieNode, currentWord: string, path: TraceCell[]) => {
-      const char = board[r][c].toUpperCase();
-      const nextNode = node.children.get(char);
-      if (!nextNode) return;
+      const tileStr = board[r][c].toUpperCase();
+      // If tile is QU, we traverse Q then U in the Trie
+      let nextNode = node;
+      let validTraversal = true;
+      let wordSoFar = currentWord;
 
-      const wordSoFar = currentWord + char;
+      const charsToTraverse = tileStr === 'QU' ? ['Q', 'U'] : [tileStr];
+
+      for (const char of charsToTraverse) {
+        const next = nextNode.children.get(char);
+        if (!next) {
+          validTraversal = false;
+          break;
+        }
+        nextNode = next;
+        wordSoFar += char;
+      }
+
+      if (!validTraversal) return;
+
       const newPath = [...path, { row: r, col: c }];
 
       if (nextNode.isWord && wordSoFar.length >= minLength) {
