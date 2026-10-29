@@ -35,11 +35,11 @@ export function useMultiplayer() {
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.host;
-    // If running on a static preview host without persistent node server, fallback to the cloud backend
     const defaultWsUrl = `${protocol}//${host}/api/ws`;
     const envWsUrl = (import.meta as any).env?.VITE_WS_URL;
     const fallbackWsUrl = 'wss://ais-pre-23mf2i35u6673vagljrsq3-214646516407.asia-east1.run.app/api/ws';
-    const wsUrl = envWsUrl || (host.includes('applet') || host.includes('preview') || host.includes('vercel') ? fallbackWsUrl : defaultWsUrl);
+    // Always use the active persistent backend URL to ensure real-time multiplayer works reliably everywhere
+    const wsUrl = envWsUrl || fallbackWsUrl || defaultWsUrl;
 
     try {
       const ws = new WebSocket(wsUrl);
