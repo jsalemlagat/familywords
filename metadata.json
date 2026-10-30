@@ -1,0 +1,6 @@
+{
+  "name": "WordCraft 5x5: Multiplayer Word Hunt",
+  "description": "Tactile 5x5 tabletop word hunt Android PWA with real-time multiplayer, room invites, swipe/tap tracing, difficulty levels, and 5 custom themes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
