@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Volume2, VolumeX, Palette, HelpCircle, ArrowLeft, RotateCcw } from 'lucide-react';
+import { Volume2, VolumeX, Palette, HelpCircle, ArrowLeft, RotateCcw, Trophy } from 'lucide-react';
 import {
   ThemeMode,
   THEME_CONFIGS,
@@ -25,6 +25,8 @@ import { ThemeSelector } from './components/ThemeSelector';
 import { HowToPlayModal } from './components/HowToPlayModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
 import { GameChat } from './components/GameChat';
+import { PlayerStatsModal } from './components/PlayerStatsModal';
+import { recordGameStats } from './services/statsService';
 
 type AppView = 'MENU' | 'PLAYING' | 'SUMMARY';
 
@@ -36,6 +38,7 @@ export default function App() {
 
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(() => soundEngine.muted);
 
   // Gameplay mode: 'SOLO' or 'MULTIPLAYER'
@@ -93,7 +96,8 @@ export default function App() {
         setSoloTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(soloTimerRef.current!);
-            // Conclude solo round
+            // Conclude solo round & record stats
+            recordGameStats(soloScore, soloWords);
             setAppView('SUMMARY');
             return 0;
           }
@@ -241,6 +245,15 @@ export default function App() {
           </button>
 
           <button
+            onClick={() => setIsStatsModalOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-xs font-bold text-amber-200 transition cursor-pointer"
+            title="Player Stats & Ranking"
+          >
+            <Trophy className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Rankings</span>
+          </button>
+
+          <button
             onClick={() => setIsRulesModalOpen(true)}
             className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 transition cursor-pointer"
             title="How to Play"
@@ -349,6 +362,12 @@ export default function App() {
       <HowToPlayModal
         isOpen={isRulesModalOpen}
         onClose={() => setIsRulesModalOpen(false)}
+      />
+
+      <PlayerStatsModal
+        isOpen={isStatsModalOpen}
+        theme={currentTheme}
+        onClose={() => setIsStatsModalOpen(false)}
       />
 
       {gameMode === 'MULTIPLAYER' && mp.room && (

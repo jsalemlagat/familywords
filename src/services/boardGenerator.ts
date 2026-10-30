@@ -41,8 +41,7 @@ export function generate5x5Board(difficulty: DifficultyLevel = 'MEDIUM'): string
         for (let c = 0; c < 5; c++) {
           const die = shuffledDice[dieIndex++];
           const face = die[Math.floor(Math.random() * die.length)];
-          // Note: In classic Boggle Q is Qu, we represent as Q or standard letter
-          board[r][c] = face === 'Q' ? 'Q' : face;
+          board[r][c] = face === 'Q' ? 'QU' : face;
         }
       }
     } else if (difficulty === 'EASY') {

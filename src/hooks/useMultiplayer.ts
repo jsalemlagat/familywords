@@ -37,9 +37,8 @@ export function useMultiplayer() {
     const host = window.location.host;
     const defaultWsUrl = `${protocol}//${host}/api/ws`;
     const envWsUrl = (import.meta as any).env?.VITE_WS_URL;
-    const fallbackWsUrl = 'wss://ais-pre-23mf2i35u6673vagljrsq3-214646516407.asia-east1.run.app/api/ws';
-    // Always use the active persistent backend URL to ensure real-time multiplayer works reliably everywhere
-    const wsUrl = envWsUrl || fallbackWsUrl || defaultWsUrl;
+    // Prioritize current origin's /api/ws so development server handles WebSockets correctly locally
+    const wsUrl = envWsUrl || defaultWsUrl;
 
     try {
       const ws = new WebSocket(wsUrl);

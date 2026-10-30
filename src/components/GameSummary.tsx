@@ -177,30 +177,45 @@ export const GameSummary: React.FC<GameSummaryProps> = ({
               </div>
             </div>
           ) : (
-            /* Solo Score Card */
-            <div className="p-5 rounded-3xl bg-black/40 border border-white/10 backdrop-blur-md flex items-center justify-between">
-              <div>
-                <span className="text-xs uppercase font-bold text-amber-300 tracking-wider">Total Score</span>
-                <div className="text-4xl font-black font-mono text-white mt-0.5">
-                  {soloScore} <span className="text-base text-amber-400">pts</span>
-                </div>
-                <div className="text-xs text-white/60 mt-1">
-                  {soloWords.length} words discovered
-                </div>
-              </div>
+            /* Solo Score Card with All-Words Bonus check */
+            (() => {
+              const hasFoundAll = allPossibleWords.length > 0 && soloWords.length >= allPossibleWords.length;
+              const finalScoreWithBonus = soloScore + (hasFoundAll ? 50 : 0);
 
-              <div className="text-right">
-                <span className="text-xs uppercase font-bold text-white/50 tracking-wider">Coverage</span>
-                <div className="text-2xl font-black font-mono text-amber-300">
-                  {allPossibleWords.length > 0
-                    ? `${Math.round((soloWords.length / allPossibleWords.length) * 100)}%`
-                    : '100%'}
+              return (
+                <div className="space-y-3">
+                  <div className="p-5 rounded-3xl bg-black/40 border border-white/10 backdrop-blur-md flex items-center justify-between">
+                    <div>
+                      <span className="text-xs uppercase font-bold text-amber-300 tracking-wider">Total Score</span>
+                      <div className="text-4xl font-black font-mono text-white mt-0.5">
+                        {finalScoreWithBonus} <span className="text-base text-amber-400">pts</span>
+                      </div>
+                      <div className="text-xs text-white/60 mt-1">
+                        {soloWords.length} words discovered {hasFoundAll && <span className="text-emerald-400 font-bold">(+50 All-Words Bonus!)</span>}
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <span className="text-xs uppercase font-bold text-white/50 tracking-wider">Coverage</span>
+                      <div className="text-2xl font-black font-mono text-amber-300">
+                        {allPossibleWords.length > 0
+                          ? `${Math.round((soloWords.length / allPossibleWords.length) * 100)}%`
+                          : '100%'}
+                      </div>
+                      <div className="text-xs text-white/60 mt-1">
+                        of {allPossibleWords.length} possible
+                      </div>
+                    </div>
+                  </div>
+
+                  {hasFoundAll && (
+                    <div className="p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs text-center font-bold animate-pulse">
+                      🎉 Incredible! You discovered all possible words and earned the +50 All-Words Bonus!
+                    </div>
+                  )}
                 </div>
-                <div className="text-xs text-white/60 mt-1">
-                  of {allPossibleWords.length} possible
-                </div>
-              </div>
-            </div>
+              );
+            })()
           )}
 
           {/* Words Discovered Breakdown */}
